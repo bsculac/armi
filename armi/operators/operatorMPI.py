@@ -97,7 +97,7 @@ class OperatorMPI(Operator):
                     1
                 )  # even though we waited, still need more time to close stdout.
                 runLog.debug("Main operate finished")
-                runLog.close()  # concatenate all logs.
+                runLog.LOG.close()  # concatenate all logs.
         else:
             try:
                 self.workerOperate()
@@ -110,7 +110,7 @@ class OperatorMPI(Operator):
                 # different bcast or gather.
                 traceback.print_exc()
                 runLog.debug("Worker failed")
-                runLog.close()
+                runLog.LOG.close()
                 raise
 
     def workerOperate(self):
@@ -227,7 +227,7 @@ class OperatorMPI(Operator):
     @staticmethod
     def workerQuit():
         runLog.debug("Worker ending")
-        runLog.close()  # no more messages.
+        runLog.LOG.close()  # no more messages.
         # wait until all workers are closed so we can delete them.
         armi.MPI_COMM.bcast("finished", root=0)
 
